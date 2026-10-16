@@ -113,9 +113,9 @@ def main():
     safe_model = args.model.replace("/", "-")
     base = out_dir / f"{stamp}_{args.provider}_{safe_model}_{args.prompt}_effort-{effort_label}"
     if args.holdout != "exclude":
-        base = base.with_name(base.name + f"_holdout-{args.holdout}")
+        base = Path(str(base) + f"_holdout-{args.holdout}")
 
-    (base.with_suffix(".json")).write_text(
+    Path(str(base) + ".json").write_text(
         json.dumps({"summary": summary, "rows": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
 
     lines = [
@@ -146,7 +146,7 @@ def main():
         status = "PASS" if r["pass"] else ("FAIL (fallback)" if r["meta"]["fallback"] else "FAIL")
         lines.append(f"| {t['id']} | {short(t['text'])} | {cell('category')} | {cell('refund_requested')} | "
                      f"{cell('priority')} | {cell('needs_human')} | {status} |")
-    base.with_suffix(".md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    Path(str(base) + ".md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"\nЗбережено: {base.relative_to(ROOT)}.md і .json")
 
 
