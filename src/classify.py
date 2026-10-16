@@ -12,6 +12,10 @@ from src import llm
 ROOT = Path(__file__).resolve().parent.parent
 CATEGORIES = {"subscription", "payment_issue", "technical", "account", "product", "expert"}
 PRIORITIES = {"high", "medium", "low"}
+# Тікети з такою або меншою кількістю слів завжди йдуть людині для уточнення
+# (правило в коді, а не лише в промпті, щоб не залежати від моделі).
+SHORT_TICKET_MAX_WORDS = 3
+
 FIELDS = ["category", "refund_requested", "priority", "next_step", "needs_human", "human_reason"]
 
 
@@ -73,7 +77,13 @@ def classify(ticket_text, provider, model, prompt_version="v1", effort=None):
         meta.update(error=resp["error"], fallback=True)
         return fallback(resp["error"]), meta
     try:
-        return validate(parse_json(resp["text"])), meta
+        result = validate(parse_json(resp["text"]))
     except (ValueError, json.JSONDecodeError) as e:
         meta.update(error=f"невалідна відповідь: {e}", fallback=True)
         return fallback(f"невалідна відповідь моделі ({e})"), meta
+
+    if len(ticket_text.split()) <= SHORT_TICKET_MAX_WORDS and not result["needs_human"]:
+        result["needs_human"] = True
+        result["human_reason"] = "Тікет надто короткий, потрібне уточнення в користувача"
+        meta["short_ticket_rule"] = True
+    return result, meta
