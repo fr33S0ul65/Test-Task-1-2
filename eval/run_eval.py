@@ -37,6 +37,7 @@ def main():
     ap.add_argument("--prompt", default="v1")
     ap.add_argument("--effort", default=None, choices=["none", "low", "medium", "high"],
                     help="глибина роздумів; без параметра = значення моделі за замовчуванням")
+    ap.add_argument("--no-cache", action="store_true", help="вимкнути кешування промпту (для порівняння)")
     ap.add_argument("--tickets", default="data/ticketsTest1.json")
     ap.add_argument("--holdout", choices=["exclude", "only", "all"], default="exclude",
                     help="exclude: без прихованих тікетів (за замовчуванням); only: тільки приховані; all: усі")
@@ -50,7 +51,7 @@ def main():
 
     rows = []
     for t in tickets:
-        result, meta = classify(t["text"], args.provider, args.model, args.prompt, args.effort)
+        result, meta = classify(t["text"], args.provider, args.model, args.prompt, args.effort, cache=not args.no_cache)
         checks = {}
         for f in COMPARED:
             exp = t.get(f"expected_{f}")
@@ -78,18 +79,22 @@ def main():
     fallbacks = sum(r["meta"]["fallback"] for r in rows)
     tin = sum(r["meta"]["input_tokens"] for r in rows)
     tout = sum(r["meta"]["output_tokens"] for r in rows)
+    cwrite = sum(r["meta"].get("cache_write_tokens", 0) for r in rows)
+    cread = sum(r["meta"].get("cache_read_tokens", 0) for r in rows)
     avg_lat = round(sum(r["meta"]["latency_s"] for r in rows) / n, 2)
-    total_cost = cost_usd(args.model, tin, tout)
+    total_cost = cost_usd(args.model, tin, tout, cwrite, cread)
+    cache_label = "off" if args.no_cache else "on"
     per_ticket = total_cost / n if total_cost is not None else None
     effort_label = args.effort or "default"
 
     summary = {
         "date": datetime.now().isoformat(timespec="seconds"),
-        "provider": args.provider, "model": args.model, "prompt": args.prompt, "effort": effort_label,
+        "provider": args.provider, "model": args.model, "prompt": args.prompt, "effort": effort_label, "cache": cache_label,
         "tickets_file": args.tickets, "holdout": args.holdout,
         "tickets": n, "passed": passed, "accuracy": f"{passed}/{n} ({round(100 * passed / n)}%)",
         "field_accuracy": field_acc, "fallbacks": fallbacks,
-        "input_tokens": tin, "output_tokens": tout, "avg_latency_s": avg_lat,
+        "input_tokens": tin, "output_tokens": tout,
+        "cache_write_tokens": cwrite, "cache_read_tokens": cread, "avg_latency_s": avg_lat,
         "cost_total_usd": total_cost, "cost_per_ticket_usd": per_ticket,
         "cost_10k_tickets_usd": per_ticket * 10_000 if per_ticket is not None else None,
         "prices_checked": PRICES_CHECKED,
@@ -100,7 +105,8 @@ def main():
     for f, v in field_acc.items():
         print(f"  {f}: {v}")
     print(f"Fallback (збої): {fallbacks}")
-    print(f"Токени: вхід {tin}, вихід {tout}; середній час {avg_lat} с")
+    print(f"Токени: вхід {tin}, вихід {tout}, запис у кеш {cwrite}, читання з кешу {cread}; "
+          f"середній час {avg_lat} с (кеш: {cache_label})")
     if per_ticket is not None:
         print(f"Вартість: ${per_ticket:.6f} за тікет, ~${per_ticket * 10_000:.2f} за 10 000 тікетів "
               f"(ціни станом на {PRICES_CHECKED})")
@@ -111,7 +117,8 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M")
     safe_model = args.model.replace("/", "-")
-    base = out_dir / f"{stamp}_{args.provider}_{safe_model}_{args.prompt}_effort-{effort_label}"
+    suffix = "" if args.no_cache else "_cache"
+    base = out_dir / (f"{stamp}_{args.provider}_{safe_model}_{args.prompt}_effort-{effort_label}" + suffix)
     if args.holdout != "exclude":
         base = Path(str(base) + f"_holdout-{args.holdout}")
 
@@ -122,7 +129,8 @@ def main():
         f"# Прогін: {args.provider} / {args.model} / промпт {args.prompt} / effort {effort_label}",
         "",
         f"Дата: {summary['date']}. Тікетів: {n}. Повністю правильно: **{summary['accuracy']}**. "
-        f"Fallback: {fallbacks}. Токени: вхід {tin}, вихід {tout}. Середній час: {avg_lat} с.",
+        f"Fallback: {fallbacks}. Токени: вхід {tin}, вихід {tout}, запис у кеш {cwrite}, "
+        f"читання з кешу {cread}. Середній час: {avg_lat} с. Кеш промпту: {cache_label}.",
         "",
         (f"Вартість: ${per_ticket:.6f} за тікет, ~${per_ticket * 10_000:.2f} за 10 000 тікетів "
          f"(ціни станом на {PRICES_CHECKED})." if per_ticket is not None else "Вартість: ціни моделі немає в таблиці."),

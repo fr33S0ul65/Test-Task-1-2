@@ -19,9 +19,22 @@ PRICES = {
 }
 
 
-def cost_usd(model, input_tokens, output_tokens):
+# Кешування промпту Claude, USD за 1 млн токенів: (запис у кеш на 1 год, читання з кешу)
+CACHE_PRICES = {
+    "claude-haiku-5-5": (0.20, 0.01),
+    "claude-sonnet-5-5": (4.00, 0.10),
+    "claude-opus-5-5": (8.00, 0.20),
+    "claude-fable-5-1": (20.00, 0.25),
+}
+
+
+def cost_usd(model, input_tokens, output_tokens, cache_write_tokens=0, cache_read_tokens=0):
     """Вартість у доларах або None, якщо ціни моделі немає в таблиці."""
     if model not in PRICES:
         return None
     pin, pout = PRICES[model]
-    return (input_tokens * pin + output_tokens * pout) / 1_000_000
+    total = input_tokens * pin + output_tokens * pout
+    if cache_write_tokens or cache_read_tokens:
+        cw, cr = CACHE_PRICES.get(model, (pin * 2, pin * 0.1))
+        total += cache_write_tokens * cw + cache_read_tokens * cr
+    return total / 1_000_000

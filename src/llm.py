@@ -8,6 +8,9 @@ call_llm(provider, model, system, user, effort=None) -> dict:
   входять у ліміт вихідних токенів, тому MAX_TOKENS із запасом.
 - temperature для цих моделей не передається (Claude 5.5 повертає на неї помилку 400,
   GPT-6 не підтримує її, коли reasoning effort не "none").
+- Кешування промпту (рішення 16.10.2026): для Claude системний промпт позначається
+  cache_control з TTL 1 година. Перший запит пише промпт у кеш (2x ціни входу),
+  наступні читають його (0.1x для Haiku). У OpenAI кешування автоматичне.
 - Глибину роздумів задає effort: у Claude це output_config.effort,
   у OpenAI це reasoning_effort. None = значення моделі за замовчуванням.
 
@@ -66,19 +69,26 @@ def _error_kind(e):
     return "other"
 
 
-def _call(provider, model, system, user, effort):
+def _call(provider, model, system, user, effort, cache):
     c = _client(provider)
     if provider == "anthropic":
         extra = {"output_config": {"effort": effort}} if effort else None
+        system_param = system
+        if cache:
+            system_param = [{"type": "text", "text": system,
+                             "cache_control": {"type": "ephemeral", "ttl": "1h"}}]
         r = c.messages.create(
             model=model,
             max_tokens=MAX_TOKENS,
-            system=system,
+            system=system_param,
             messages=[{"role": "user", "content": user}],
             extra_body=extra,
         )
         text = "".join(b.text for b in r.content if getattr(b, "type", "") == "text")
-        return text, r.usage.input_tokens, r.usage.output_tokens
+        u = r.usage
+        return (text, u.input_tokens, u.output_tokens,
+                getattr(u, "cache_creation_input_tokens", 0) or 0,
+                getattr(u, "cache_read_input_tokens", 0) or 0)
     # openai
     extra = {"reasoning_effort": effort} if effort else None
     r = c.chat.completions.create(
@@ -88,20 +98,23 @@ def _call(provider, model, system, user, effort):
         max_completion_tokens=MAX_TOKENS,
         extra_body=extra,
     )
-    return r.choices[0].message.content or "", r.usage.prompt_tokens, r.usage.completion_tokens
+    # У OpenAI кешовані токени входять у prompt_tokens; окремо їх не рахуємо
+    return r.choices[0].message.content or "", r.usage.prompt_tokens, r.usage.completion_tokens, 0, 0
 
 
-def call_llm(provider, model, system, user, effort=None):
+def call_llm(provider, model, system, user, effort=None, cache=True):
     start = time.perf_counter()
     error = None
     attempt = 0
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            text, tin, tout = _call(provider, model, system, user, effort)
+            text, tin, tout, cwrite, cread = _call(provider, model, system, user, effort, cache)
             return {
                 "text": text,
                 "input_tokens": tin,
                 "output_tokens": tout,
+                "cache_write_tokens": cwrite,
+                "cache_read_tokens": cread,
                 "latency_s": round(time.perf_counter() - start, 2),
                 "attempts": attempt,
                 "error": None,
@@ -117,6 +130,8 @@ def call_llm(provider, model, system, user, effort=None):
         "text": None,
         "input_tokens": 0,
         "output_tokens": 0,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 0,
         "latency_s": round(time.perf_counter() - start, 2),
         "attempts": attempt,
         "error": error,

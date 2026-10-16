@@ -59,9 +59,10 @@ def fallback(reason):
     }
 
 
-def classify(ticket_text, provider, model, prompt_version="v1", effort=None):
+def classify(ticket_text, provider, model, prompt_version="v1", effort=None, cache=True):
     meta = {"provider": provider, "model": model, "prompt": prompt_version, "effort": effort,
-            "input_tokens": 0, "output_tokens": 0, "latency_s": 0, "attempts": 0,
+            "input_tokens": 0, "output_tokens": 0, "cache_write_tokens": 0, "cache_read_tokens": 0,
+            "latency_s": 0, "attempts": 0,
             "raw": None, "error": None, "fallback": False}
 
     if not ticket_text or not ticket_text.strip():
@@ -69,8 +70,8 @@ def classify(ticket_text, provider, model, prompt_version="v1", effort=None):
         return fallback("порожній тікет"), meta
 
     resp = llm.call_llm(provider, model, load_prompt(prompt_version),
-                        f"<ticket>\n{ticket_text}\n</ticket>", effort=effort)
-    meta.update({k: resp[k] for k in ("input_tokens", "output_tokens", "latency_s", "attempts")})
+                        f"<ticket>\n{ticket_text}\n</ticket>", effort=effort, cache=cache)
+    meta.update({k: resp[k] for k in ("input_tokens", "output_tokens", "cache_write_tokens", "cache_read_tokens", "latency_s", "attempts")})
     meta["raw"] = resp["text"]
 
     if resp["error"]:
