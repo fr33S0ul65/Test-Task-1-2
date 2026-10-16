@@ -55,8 +55,8 @@ def fallback(reason):
     }
 
 
-def classify(ticket_text, provider, model, prompt_version="v1"):
-    meta = {"provider": provider, "model": model, "prompt": prompt_version,
+def classify(ticket_text, provider, model, prompt_version="v1", effort=None):
+    meta = {"provider": provider, "model": model, "prompt": prompt_version, "effort": effort,
             "input_tokens": 0, "output_tokens": 0, "latency_s": 0, "attempts": 0,
             "raw": None, "error": None, "fallback": False}
 
@@ -65,7 +65,7 @@ def classify(ticket_text, provider, model, prompt_version="v1"):
         return fallback("порожній тікет"), meta
 
     resp = llm.call_llm(provider, model, load_prompt(prompt_version),
-                        f"<ticket>\n{ticket_text}\n</ticket>")
+                        f"<ticket>\n{ticket_text}\n</ticket>", effort=effort)
     meta.update({k: resp[k] for k in ("input_tokens", "output_tokens", "latency_s", "attempts")})
     meta["raw"] = resp["text"]
 
