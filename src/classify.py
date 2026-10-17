@@ -16,6 +16,12 @@ PRIORITIES = {"high", "medium", "low"}
 # (правило в коді, а не лише в промпті, щоб не залежати від моделі).
 SHORT_TICKET_MAX_WORDS = 3
 
+# Фінальна конфігурація (рішення 16.10.2026, див. decisions.md)
+DEFAULT_PROVIDER = "anthropic"
+DEFAULT_MODEL = "claude-haiku-5-5"
+DEFAULT_PROMPT = "v3"
+DEFAULT_EFFORT = "medium"
+
 FIELDS = ["category", "refund_requested", "priority", "next_step", "needs_human", "human_reason"]
 
 
@@ -88,3 +94,20 @@ def classify(ticket_text, provider, model, prompt_version="v1", effort=None, cac
         result["human_reason"] = "Тікет надто короткий, потрібне уточнення в користувача"
         meta["short_ticket_rule"] = True
     return result, meta
+
+
+if __name__ == "__main__":
+    # Класифікація одного тікета з командного рядка:
+    #   .venv/bin/python -m src.classify "текст тікета"
+    import argparse
+    ap = argparse.ArgumentParser(description="Класифікувати один тікет")
+    ap.add_argument("text")
+    ap.add_argument("--provider", default=DEFAULT_PROVIDER, choices=["anthropic", "openai"])
+    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--prompt", default=DEFAULT_PROMPT)
+    ap.add_argument("--effort", default=DEFAULT_EFFORT)
+    a = ap.parse_args()
+    res, meta = classify(a.text, a.provider, a.model, a.prompt, a.effort)
+    print(json.dumps(res, ensure_ascii=False, indent=2))
+    if meta["fallback"]:
+        print(f"[fallback: {meta['error']}]")
