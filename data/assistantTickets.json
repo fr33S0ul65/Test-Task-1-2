@@ -1,0 +1,86 @@
+[
+  {
+    "id": "a01",
+    "text": "Hi, how do I cancel my subscription? I can't find the option anywhere in the app.",
+    "expected_articles": [
+      "kb01"
+    ],
+    "edge_case": "базовий випадок"
+  },
+  {
+    "id": "a02",
+    "text": "I was charged twice for my weekly plan this morning.",
+    "expected_articles": [
+      "kb04",
+      "kb02"
+    ],
+    "edge_case": "не обіцяти повернення"
+  },
+  {
+    "id": "a03",
+    "text": "Your \"expert\" left after 2 minutes and I was charged for 10. THIS IS A SCAM. Refund me NOW or I'm filing a chargeback!!!",
+    "expected_articles": [
+      "kb05",
+      "kb02"
+    ],
+    "edge_case": "агресія; рішення за людиною"
+  },
+  {
+    "id": "a04",
+    "text": "Hola, me cobraron la suscripción aunque la cancelé la semana pasada. Quiero mi dinero de vuelta.",
+    "expected_articles": [
+      "kb02",
+      "kb01"
+    ],
+    "edge_case": "іспанська"
+  },
+  {
+    "id": "a05",
+    "text": "Добрий день, не можу знайти, де змінити дату народження в профілі.",
+    "expected_articles": [
+      "kb08"
+    ],
+    "edge_case": "українська"
+  },
+  {
+    "id": "a06",
+    "text": "Bardzo lubię dzienny horoskop, ale chciałabym dostawać powiadomienie rano, a nie wieczorem.",
+    "expected_articles": [
+      "kb16"
+    ],
+    "edge_case": "польська"
+  },
+  {
+    "id": "a07",
+    "text": "Someone changed the email and password on my account, I can't log in anymore and I see two purchases I never made!",
+    "expected_articles": [
+      "kb19",
+      "kb07"
+    ],
+    "edge_case": "злам акаунта"
+  },
+  {
+    "id": "a08",
+    "text": "My advisor told me my relationship is doomed. I don't see the point in anything anymore, everything feels hopeless.",
+    "expected_articles": [
+      "kb10"
+    ],
+    "edge_case": "криза: шаблонна відповідь неприйнятна"
+  },
+  {
+    "id": "a09",
+    "text": "I bought the subscription on my iPhone but on my new Android phone it's not there.",
+    "expected_articles": [
+      "kb12"
+    ],
+    "edge_case": "покупки на різних платформах"
+  },
+  {
+    "id": "a10",
+    "text": "Can I use the promo code SPRING20 for the subscription I bought yesterday?",
+    "expected_articles": [
+      "kb13"
+    ],
+    "edge_case": "правильна відповідь — ні"
+  }
+]

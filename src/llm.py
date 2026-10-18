@@ -136,3 +136,35 @@ def call_llm(provider, model, system, user, effort=None, cache=True):
         "attempts": attempt,
         "error": error,
     }
+
+
+# ---------- Embeddings (Task 2, пошук у базі знань) ----------
+# Рішення 17.10.2026: OpenAI text-embedding-3-small (Anthropic не має власної моделі embeddings).
+EMBED_MODEL = "text-embedding-3-small"
+
+
+def embed(texts, model=EMBED_MODEL):
+    """Повертає вектори для списку текстів з тими самими повторами при збоях, що й call_llm."""
+    start = time.perf_counter()
+    error = None
+    attempt = 0
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            r = _client("openai").embeddings.create(model=model, input=texts)
+            data = sorted(r.data, key=lambda d: d.index)
+            return {
+                "vectors": [d.embedding for d in data],
+                "tokens": r.usage.total_tokens,
+                "latency_s": round(time.perf_counter() - start, 2),
+                "attempts": attempt,
+                "error": None,
+            }
+        except Exception as e:  # noqa: BLE001
+            kind = _error_kind(e)
+            error = f"{kind}: {type(e).__name__}: {e}"
+            if kind in ("rate_limit", "timeout", "connection", "server") and attempt < MAX_RETRIES:
+                time.sleep(2 ** attempt)
+                continue
+            break
+    return {"vectors": None, "tokens": 0, "latency_s": round(time.perf_counter() - start, 2),
+            "attempts": attempt, "error": error}
