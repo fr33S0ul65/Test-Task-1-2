@@ -15,7 +15,8 @@ import re
 from src import kb, llm
 from src.classify import DEFAULT_EFFORT, DEFAULT_MODEL, DEFAULT_PROVIDER, ROOT, parse_json
 
-DEFAULT_REPLY_PROMPT = "v2"
+DEFAULT_REPLY_PROMPT = "v3"
+UK_LETTERS = set("іїєґІЇЄҐ")
 TOP_K = 3
 TONES = ("formal", "empathetic", "short")
 
@@ -84,7 +85,8 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
         replies = d["replies"]
         if not all(isinstance(replies.get(t), str) and replies[t].strip() for t in TONES):
             raise ValueError("немає одного з трьох варіантів відповіді")
-        if not isinstance(d.get("summary"), str) or not d["summary"].strip():
+        summary = d.get("summary_uk") or d.get("summary")  # v3: summary_uk; v1–v2: summary
+        if not isinstance(summary, str) or not summary.strip():
             raise ValueError("немає summary")
     except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
         meta.update(error=f"невалідна відповідь: {e}", fallback=True)
@@ -92,6 +94,8 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
         out["retrieved"] = [{"id": h["id"], "title": h["title"], "score": h["score"], "pinned": h.get("pinned", False)} for h in hits]
         return out, meta
 
+    if not (UK_LETTERS & set(summary)):
+        warnings.append("Summary, схоже, не українською — перевір.")
     if len({_norm(replies[t]) for t in TONES}) < 3:
         warnings.append("Деякі варіанти відповіді однакові.")
 
@@ -111,7 +115,7 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
         warnings.append("Модель не знайшла в базі статті, що відповідає на тікет.")
 
     result = {
-        "summary": d["summary"],
+        "summary": summary,
         "language": d.get("language"),
         "replies": {t: replies[t] for t in TONES},
         "source": src_out,

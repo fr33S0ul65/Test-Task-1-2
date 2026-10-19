@@ -52,6 +52,7 @@ def main():
             "cited": src.get("article_id") in t["expected_articles"],
             "quote": bool(src.get("verified")),
             "format": not meta["fallback"] and not any("однакові" in w for w in res["warnings"]),
+            "summary_uk": not meta["fallback"] and not any("не українською" in w for w in res["warnings"]),
         }
         rows.append({"ticket": t, "result": res, "meta": meta, "checks": checks})
         flags = " ".join(f"{k}={yn(v)}" for k, v in checks.items())
@@ -59,7 +60,7 @@ def main():
         time.sleep(0.5)
 
     n = len(rows)
-    acc = {k: sum(r["checks"][k] for r in rows) for k in ("retrieval", "cited", "quote", "format")}
+    acc = {k: sum(r["checks"][k] for r in rows) for k in ("retrieval", "cited", "quote", "format", "summary_uk")}
     tin = sum(r["meta"]["input_tokens"] for r in rows)
     tout = sum(r["meta"]["output_tokens"] for r in rows)
     cw = sum(r["meta"]["cache_write_tokens"] for r in rows)
@@ -97,9 +98,9 @@ def main():
     L = [f"# Прогін асистента: {args.model} / reply {args.prompt} / effort {args.effort}", "",
          f"Дата: {summary['date']}. Тікетів: {n}. " + ", ".join(f"{k} {v}/{n}" for k, v in acc.items()) + ".",
          f"Вартість: ${per_ticket:.6f} за тікет (~${per_ticket * 10_000:.2f} за 10 000). Середній час: {avg_lat} с.", "",
-         "\* — закріплена стаття, додається завжди; у перевірці пошуку не враховується.", "",
-         "| ID | Тікет | Очікувані статті | Знайдено (score) | Цитує | Пошук | Стаття | Цитата | Формат |",
-         "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+         r"\* — закріплена стаття, додається завжди; у перевірці пошуку не враховується.", "",
+         "| ID | Тікет | Очікувані статті | Знайдено (score) | Цитує | Пошук | Стаття | Цитата | Формат | Summary укр. |",
+         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for r in rows:
         t, res, c = r["ticket"], r["result"], r["checks"]
         found = ", ".join(f"{h['id']}{'*' if h.get('pinned') else ''} ({h['score']})" for h in res["retrieved"])
@@ -107,7 +108,7 @@ def main():
         txt = txt if len(txt) <= 50 else txt[:49] + "…"
         L.append(f"| {t['id']} | {txt} | {', '.join(t['expected_articles'])} | {found} | "
                  f"{(res['source'] or {}).get('article_id', '—')} | {yn(c['retrieval'])} | {yn(c['cited'])} | "
-                 f"{yn(c['quote'])} | {yn(c['format'])} |")
+                 f"{yn(c['quote'])} | {yn(c['format'])} | {yn(c['summary_uk'])} |")
     L += ["", "## Відповіді для ручного перегляду", ""]
     for r in rows:
         t, res = r["ticket"], r["result"]
