@@ -44,7 +44,8 @@ def main():
     rows = []
     for t in tickets:
         res, meta = assist(t["text"], args.provider, args.model, args.prompt, args.effort)
-        ids = [r["id"] for r in res["retrieved"]]
+        ids = [r["id"] for r in res["retrieved"] if not r.get("pinned")]  # пошук без закріплених статей
+        shown = [r["id"] + ("*" if r.get("pinned") else "") for r in res["retrieved"]]
         src = res["source"] or {}
         checks = {
             "retrieval": any(a in ids for a in t["expected_articles"]),
@@ -54,7 +55,7 @@ def main():
         }
         rows.append({"ticket": t, "result": res, "meta": meta, "checks": checks})
         flags = " ".join(f"{k}={yn(v)}" for k, v in checks.items())
-        print(f"{t['id']}: {flags}  знайдено {ids}  ({meta['latency_s']} с)")
+        print(f"{t['id']}: {flags}  знайдено {shown}  ({meta['latency_s']} с)")
         time.sleep(0.5)
 
     n = len(rows)
@@ -96,11 +97,12 @@ def main():
     L = [f"# Прогін асистента: {args.model} / reply {args.prompt} / effort {args.effort}", "",
          f"Дата: {summary['date']}. Тікетів: {n}. " + ", ".join(f"{k} {v}/{n}" for k, v in acc.items()) + ".",
          f"Вартість: ${per_ticket:.6f} за тікет (~${per_ticket * 10_000:.2f} за 10 000). Середній час: {avg_lat} с.", "",
+         "\* — закріплена стаття, додається завжди; у перевірці пошуку не враховується.", "",
          "| ID | Тікет | Очікувані статті | Знайдено (score) | Цитує | Пошук | Стаття | Цитата | Формат |",
          "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for r in rows:
         t, res, c = r["ticket"], r["result"], r["checks"]
-        found = ", ".join(f"{h['id']} ({h['score']})" for h in res["retrieved"])
+        found = ", ".join(f"{h['id']}{'*' if h.get('pinned') else ''} ({h['score']})" for h in res["retrieved"])
         txt = t["text"].replace("|", "\\|")
         txt = txt if len(txt) <= 50 else txt[:49] + "…"
         L.append(f"| {t['id']} | {txt} | {', '.join(t['expected_articles'])} | {found} | "

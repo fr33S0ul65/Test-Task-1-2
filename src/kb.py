@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parent.parent
 KB_DIR = ROOT / "data" / "knowledge_base"
 CACHE = ROOT / ".cache" / "kb_embeddings.json"
 
+# Статті, які додаються до результатів пошуку завжди (рішення 19.10.2026):
+# kb10 про самопочуття й кризову допомогу, бо пошук пропустив її в тікеті з ознаками кризи.
+PINNED = ["kb10"]
+
 
 def load_articles():
     articles = []
@@ -72,7 +76,7 @@ def _cosine(a, b):
 
 
 def search(query, k=3):
-    """Повертає (top-k статей зі score, meta з токенами). При збої кидає RuntimeError."""
+    """Повертає (top-k статей зі score + закріплені статті з pinned=True, meta). При збої кидає RuntimeError."""
     articles = load_articles()
     vectors, index_tokens = article_vectors(articles)
     q = llm.embed([query])
@@ -83,5 +87,11 @@ def search(query, k=3):
         ({**a, "score": round(_cosine(qv, vectors[a["id"]]), 4)} for a in articles),
         key=lambda a: a["score"], reverse=True,
     )
+    top = [{**a, "pinned": False} for a in scored[:k]]
+    for pid in PINNED:
+        if all(a["id"] != pid for a in top):
+            art = next((a for a in scored if a["id"] == pid), None)
+            if art:
+                top.append({**art, "pinned": True})
     meta = {"index_tokens": index_tokens, "query_tokens": q["tokens"], "embed_latency_s": q["latency_s"]}
-    return scored[:k], meta
+    return top, meta

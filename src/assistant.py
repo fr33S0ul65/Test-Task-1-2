@@ -15,7 +15,7 @@ import re
 from src import kb, llm
 from src.classify import DEFAULT_EFFORT, DEFAULT_MODEL, DEFAULT_PROVIDER, ROOT, parse_json
 
-DEFAULT_REPLY_PROMPT = "v1"
+DEFAULT_REPLY_PROMPT = "v2"
 TOP_K = 3
 TONES = ("formal", "empathetic", "short")
 
@@ -60,8 +60,11 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
         warnings.append(f"База знань недоступна ({e}). Відповіді без опори на базу — перевір їх особливо уважно.")
 
     if hits:
-        articles = "\n\n".join(
-            f'<article id="{h["id"]}" title="{h["title"]}">\n{h["text"]}\n</article>' for h in hits)
+        parts = []
+        for h in hits:
+            pin = ' pinned="true"' if h.get("pinned") else ""
+            parts.append(f'<article id="{h["id"]}" title="{h["title"]}"{pin}>\n{h["text"]}\n</article>')
+        articles = "\n\n".join(parts)
     else:
         articles = "<no_articles/>"
     user = f"<ticket>\n{ticket_text}\n</ticket>\n\n<knowledge_base>\n{articles}\n</knowledge_base>"
@@ -73,7 +76,7 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
     if resp["error"]:
         meta.update(error=resp["error"], fallback=True)
         out = _fallback(resp["error"])
-        out["retrieved"] = [{"id": h["id"], "title": h["title"], "score": h["score"]} for h in hits]
+        out["retrieved"] = [{"id": h["id"], "title": h["title"], "score": h["score"], "pinned": h.get("pinned", False)} for h in hits]
         return out, meta
 
     try:
@@ -86,7 +89,7 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
     except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
         meta.update(error=f"невалідна відповідь: {e}", fallback=True)
         out = _fallback(f"невалідна відповідь моделі ({e})")
-        out["retrieved"] = [{"id": h["id"], "title": h["title"], "score": h["score"]} for h in hits]
+        out["retrieved"] = [{"id": h["id"], "title": h["title"], "score": h["score"], "pinned": h.get("pinned", False)} for h in hits]
         return out, meta
 
     if len({_norm(replies[t]) for t in TONES}) < 3:
@@ -112,7 +115,7 @@ def assist(ticket_text, provider=DEFAULT_PROVIDER, model=DEFAULT_MODEL,
         "language": d.get("language"),
         "replies": {t: replies[t] for t in TONES},
         "source": src_out,
-        "retrieved": [{"id": h["id"], "title": h["title"], "score": h["score"]} for h in hits],
+        "retrieved": [{"id": h["id"], "title": h["title"], "score": h["score"], "pinned": h.get("pinned", False)} for h in hits],
         "warnings": warnings,
     }
     return result, meta
