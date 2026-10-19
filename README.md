@@ -3,7 +3,9 @@
 Тестове завдання OBRIO (AI Ops Specialist): два прототипи для команди підтримки Nebula.
 
 - **Task 1 — AI-класифікатор тікетів.** Приймає текст звернення і повертає категорію, пріоритет, рекомендований наступний крок і ознаку, чи потрібна людина. **Готово.**
-- **Task 2 — AI-асистент для агента.** Summary звернення, варіанти відповіді різного тону, цитата з бази знань. *В роботі.*
+- **Task 2 — AI-асистент для агента.** Summary звернення, три варіанти відповіді різного тону, цитата з бази знань з перевіркою. **Готово.**
+
+Обидва інструменти доступні в простому веб-інтерфейсі: `.venv/bin/streamlit run app.py`.
 
 ## Task 1 коротко
 
@@ -22,28 +24,55 @@
 - [docs/automation_limits.md](docs/automation_limits.md) — які тікети не обробляються автоматично і механізм human-in-the-loop.
 - [decisions.md](decisions.md) — усі рішення з датами й причинами, зокрема ті, що я ухвалив сам.
 
+## Task 2 коротко
+
+| | |
+| --- | --- |
+| Підхід | Пошук за змістом (OpenAI `text-embedding-3-small`) по 20 статтях симульованої бази → один запит до `claude-haiku-5-5` з промптом `reply_v3` |
+| Результат | Summary українською, три тони мовою клієнта, цитата зі статті, яку код перевіряє дослівно |
+| Оцінка (10 тікетів) | Пошук 9/10, правильна стаття 10/10, цитата 10/10, формат 10/10, summary українською 10/10 |
+| Вартість | ~$4.45 за 10 000 тікетів (з класифікатором у вкладці — ~$5.60) |
+
+Документація:
+- [docs/task2_assistant.md](docs/task2_assistant.md) — архітектура, чому embeddings, як структурований промпт для тонів, оцінка, приклад поганого output і що з ним зроблено, компроміси.
+- [docs/task2_prompt_evolution.md](docs/task2_prompt_evolution.md) — промпт асистента v1 → v3, що не спрацювало з першого разу.
+- [docs/automation_limits.md](docs/automation_limits.md) — сценарії, де агент вирішує сам, і як це позначено в інтерфейсі.
+
 ## Структура
 
 ```
 data/ticketsTest1.json      16 тестових тікетів з очікуваними відповідями
 data/ticketsHoldout.json    5 прихованих тікетів (на них промпт не підганявся)
+data/assistantTickets.json  10 тестових тікетів для асистента з очікуваними статтями
+data/knowledge_base/        20 статей симульованої бази знань (MyTestBase)
 prompts/classify_v1..v3.txt версії промпту класифікатора
+prompts/reply_v1..v3.txt    версії промпту асистента
 src/llm.py                  єдиний шар виклику моделей (Claude, GPT), повтори при збоях
 src/classify.py             класифікатор: промпт → модель → перевірка JSON → fallback
+src/kb.py                   база знань: embeddings, кеш векторів у .cache/, пошук
+src/assistant.py            асистент: пошук → summary і три тони → перевірки цитати й мови
 src/pricing.py              ціни моделей і розрахунок вартості
+app.py                      веб-інтерфейс Streamlit: класифікатор і асистент
 eval/run_eval.py            прогін на тестовому наборі, таблиця результатів
 eval/show_next_steps.py     next_step моделі поруч з очікуваним, для ручного перегляду
+eval/run_assistant.py       прогін асистента: пошук, стаття, цитата, формат + тексти для ручного перегляду
 eval/results/               результати всіх прогонів (.md — таблиця, .json — деталі)
 ```
 
 ## Запуск
 
-Потрібен Python 3.10+ і ключі API Anthropic (і OpenAI, якщо порівнювати з GPT).
+Потрібен Python 3.10+ і ключі API Anthropic та OpenAI (OpenAI — для embeddings у Task 2 і для порівняння моделей у Task 1).
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 cp .env.example .env        # встав свої ключі в .env
+```
+
+Веб-інтерфейс (обидві задачі):
+
+```bash
+.venv/bin/streamlit run app.py
 ```
 
 Класифікувати один тікет (фінальна конфігурація):
@@ -61,5 +90,12 @@ cp .env.example .env        # встав свої ключі в .env
 ```
 
 Для GPT: `--provider openai --model gpt-6-luna`. Прапорець `--no-cache` вимикає кешування промпту.
+
+Асистент (Task 2):
+
+```bash
+.venv/bin/python -m src.assistant "I was charged twice for my weekly plan this morning."
+.venv/bin/python eval/run_assistant.py --prompt v3
+```
 
 Ключі зберігаються лише в `.env`, який є в `.gitignore`. Тестові тікети синтетичні, реальних даних у репозиторії немає.
