@@ -38,10 +38,12 @@ def ticket_input(key):
 
 
 def show_classification(res, meta):
-    c1, c2, c3 = st.columns(3)
+    c1, c2, c3 = st.columns([3, 2, 3])
     c1.metric("Категорія", res["category"] or "—")
     c2.metric("Пріоритет", PRIORITY_LABELS.get(res["priority"], "—"))
-    c3.metric("Повернення коштів", "так" if res["refund_requested"] else "ні")
+    c3.metric("Клієнт прямо просить повернення", "так" if res["refund_requested"] else "ні",
+              help="Ознака refund_requested: true лише якщо клієнт прямо просить повернути гроші. "
+                   "Чи потрібне повернення насправді, вирішує агент.")
     st.markdown(f"**Рекомендований наступний крок:** {res['next_step']}")
     if meta.get("fallback"):
         st.caption(f"Збій класифікації: {meta['error']}")
