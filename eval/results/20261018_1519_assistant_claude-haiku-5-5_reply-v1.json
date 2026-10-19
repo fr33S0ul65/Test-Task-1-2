@@ -1,0 +1,687 @@
+{
+  "summary": {
+    "date": "2026-10-18T15:19:02",
+    "model": "claude-haiku-5-5",
+    "prompt": "v1",
+    "effort": "medium",
+    "embed_model": "text-embedding-3-small",
+    "tickets": 10,
+    "checks": {
+      "retrieval": "9/10",
+      "cited": "9/10",
+      "quote": "10/10",
+      "format": "10/10"
+    },
+    "gen_tokens": {
+      "input": 6484,
+      "output": 11144,
+      "cache_write": 571,
+      "cache_read": 5139
+    },
+    "embed_tokens": {
+      "query": 247,
+      "index": 1977
+    },
+    "avg_latency_s": 5.18,
+    "cost_per_ticket_usd": 0.000639093,
+    "cost_10k_usd": 6.39093,
+    "index_cost_usd": 3.954e-05,
+    "prices_checked": "2026-10-16"
+  },
+  "rows": [
+    {
+      "ticket": {
+        "id": "a01",
+        "text": "Hi, how do I cancel my subscription? I can't find the option anywhere in the app.",
+        "expected_articles": [
+          "kb01"
+        ],
+        "edge_case": "базовий випадок"
+      },
+      "result": {
+        "summary": "Клієнт не може знайти, як скасувати підписку в застосунку. Стаття kb01 пояснює, що скасування залежить від місця оформлення підписки (iPhone/iPad, Android або сайт), а видалення застосунку підписку не скасовує. Мова звернення: англійська.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting us. You can cancel your MyTestBase subscription at any time. The cancellation option depends on where you subscribed: on iPhone or iPad, go to Settings → your name → Subscriptions → MyTestBase → Cancel Subscription; on Android, go to Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel; if you subscribed on our website, log in at mytestbase.example and go to Profile → Manage subscription → Cancel. Cancellation stops future renewals, and you keep premium access until the end of the period you have already paid for. Please note that deleting the app does not cancel your subscription.",
+          "empathetic": "We understand how frustrating it can be when you cannot find a setting you are looking for, and we are sorry for the trouble. You can cancel your MyTestBase subscription at any time. The steps depend on where you subscribed: on iPhone or iPad, go to Settings → your name → Subscriptions → MyTestBase → Cancel Subscription; on Android, go to Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel; if you subscribed on our website, log in at mytestbase.example and go to Profile → Manage subscription → Cancel. Cancelling stops future renewals, and you keep premium access until the end of the period you have already paid for. Deleting the app will not cancel your subscription, so please use one of these steps.",
+          "short": "You can cancel anytime. On iPhone/iPad: Settings → your name → Subscriptions → MyTestBase → Cancel Subscription. On Android: Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel. On the website: Profile → Manage subscription → Cancel. Deleting the app does not cancel it."
+        },
+        "source": {
+          "article_id": "kb01",
+          "title": "Subscriptions: cancellation, trial and renewal",
+          "quote": "How to cancel depends on where you subscribed:",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb01",
+            "title": "Subscriptions: cancellation, trial and renewal",
+            "score": 0.5509
+          },
+          {
+            "id": "kb09",
+            "title": "Account deletion and personal data",
+            "score": 0.4467
+          },
+          {
+            "id": "kb16",
+            "title": "Notifications",
+            "score": 0.3506
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 710,
+        "output_tokens": 762,
+        "cache_write_tokens": 571,
+        "cache_read_tokens": 0,
+        "embed_index_tokens": 1977,
+        "embed_query_tokens": 20,
+        "latency_s": 4.5,
+        "raw": "{\"summary\": \"Клієнт не може знайти, як скасувати підписку в застосунку. Стаття kb01 пояснює, що скасування залежить від місця оформлення підписки (iPhone/iPad, Android або сайт), а видалення застосунку підписку не скасовує. Мова звернення: англійська.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting us. You can cancel your MyTestBase subscription at any time. The cancellation option depends on where you subscribed: on iPhone or iPad, go to Settings → your name → Subscriptions → MyTestBase → Cancel Subscription; on Android, go to Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel; if you subscribed on our website, log in at mytestbase.example and go to Profile → Manage subscription → Cancel. Cancellation stops future renewals, and you keep premium access until the end of the period you have already paid for. Please note that deleting the app does not cancel your subscription.\", \"empathetic\": \"We understand how frustrating it can be when you cannot find a setting you are looking for, and we are sorry for the trouble. You can cancel your MyTestBase subscription at any time. The steps depend on where you subscribed: on iPhone or iPad, go to Settings → your name → Subscriptions → MyTestBase → Cancel Subscription; on Android, go to Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel; if you subscribed on our website, log in at mytestbase.example and go to Profile → Manage subscription → Cancel. Cancelling stops future renewals, and you keep premium access until the end of the period you have already paid for. Deleting the app will not cancel your subscription, so please use one of these steps.\", \"short\": \"You can cancel anytime. On iPhone/iPad: Settings → your name → Subscriptions → MyTestBase → Cancel Subscription. On Android: Google Play → Payments & subscriptions → Subscriptions → MyTestBase → Cancel. On the website: Profile → Manage subscription → Cancel. Deleting the app does not cancel it.\"}, \"source\": {\"article_id\": \"kb01\", \"quote\": \"How to cancel depends on where you subscribed:\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a02",
+        "text": "I was charged twice for my weekly plan this morning.",
+        "expected_articles": [
+          "kb04",
+          "kb02"
+        ],
+        "edge_case": "не обіцяти повернення"
+      },
+      "result": {
+        "summary": "Клієнт повідомляє, що сьогодні вранці з нього двічі списали оплату за тижневий план. Можлива причина — тимчасове авторизаційне утримання банку, яке зазвичай зникає за 3–5 робочих днів; якщо обидва списання залишаться, потрібно звернутися з датами та сумами. Повернення коштів розглядаються індивідуально, автоматично не надаються.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting us. We have received your report of two charges for your weekly plan today. Two charges for one purchase are often a temporary authorization hold from your bank, which usually disappears within 3–5 business days. If both charges are still visible after that period, please reply with the dates and amounts of the charges and the email linked to your MyTestBase account, and our team will investigate. If you are eligible, refund requests are reviewed individually by our billing team, usually within 3 business days.",
+          "empathetic": "I'm sorry to hear you were charged twice for your weekly plan this morning, I understand how frustrating that is. Two charges for one purchase are often a temporary authorization hold from your bank, which usually disappears within 3–5 business days. If both charges are still there after that, please reply with the dates and amounts and the email linked to your MyTestBase account, and we will investigate. Refund requests are reviewed individually by our billing team, usually within 3 business days.",
+          "short": "Two charges are often a temporary bank authorization hold that disappears within 3–5 business days. If both charges remain after that, please send us the dates, amounts and your MyTestBase account email so we can investigate. Refund requests are reviewed individually, usually within 3 business days."
+        },
+        "source": {
+          "article_id": "kb04",
+          "title": "Payment issues",
+          "quote": "Seeing two charges for one purchase is often a temporary authorization hold from your bank.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb04",
+            "title": "Payment issues",
+            "score": 0.4316
+          },
+          {
+            "id": "kb02",
+            "title": "Refunds",
+            "score": 0.2942
+          },
+          {
+            "id": "kb03",
+            "title": "Chat balance and minutes",
+            "score": 0.2731
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 620,
+        "output_tokens": 615,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 11,
+        "latency_s": 3.09,
+        "raw": "{\"summary\": \"Клієнт повідомляє, що сьогодні вранці з нього двічі списали оплату за тижневий план. Можлива причина — тимчасове авторизаційне утримання банку, яке зазвичай зникає за 3–5 робочих днів; якщо обидва списання залишаться, потрібно звернутися з датами та сумами. Повернення коштів розглядаються індивідуально, автоматично не надаються.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting us. We have received your report of two charges for your weekly plan today. Two charges for one purchase are often a temporary authorization hold from your bank, which usually disappears within 3–5 business days. If both charges are still visible after that period, please reply with the dates and amounts of the charges and the email linked to your MyTestBase account, and our team will investigate. If you are eligible, refund requests are reviewed individually by our billing team, usually within 3 business days.\", \"empathetic\": \"I'm sorry to hear you were charged twice for your weekly plan this morning, I understand how frustrating that is. Two charges for one purchase are often a temporary authorization hold from your bank, which usually disappears within 3–5 business days. If both charges are still there after that, please reply with the dates and amounts and the email linked to your MyTestBase account, and we will investigate. Refund requests are reviewed individually by our billing team, usually within 3 business days.\", \"short\": \"Two charges are often a temporary bank authorization hold that disappears within 3–5 business days. If both charges remain after that, please send us the dates, amounts and your MyTestBase account email so we can investigate. Refund requests are reviewed individually, usually within 3 business days.\"}, \"source\": {\"article_id\": \"kb04\", \"quote\": \"Seeing two charges for one purchase is often a temporary authorization hold from your bank.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a03",
+        "text": "Your \"expert\" left after 2 minutes and I was charged for 10. THIS IS A SCAM. Refund me NOW or I'm filing a chargeback!!!",
+        "expected_articles": [
+          "kb05",
+          "kb02"
+        ],
+        "edge_case": "агресія; рішення за людиною"
+      },
+      "result": {
+        "summary": "Клієнт стверджує, що експерт завершив сесію через 2 хвилини, але з нього списали оплату за 10 хвилин. Він вимагає негайного повернення коштів і погрожує chargeback. За базою знань, запит на повернення розглядає billing-команда, зазвичай протягом 3 робочих днів, а неспожиті хвилини повертаються на баланс після підтвердження скарги на радника.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting us, and we are sorry for the experience you describe. You can report the advisor from your chat history, and our Advisor Quality team will review the report. If the advisor ended the session early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. To help us review it, please reply with the date and amount of the charge and the email linked to your MyTestBase account. Please also contact us before disputing the charge with your bank, so we can check it quickly.",
+          "empathetic": "We understand how frustrating it is to have a session end after two minutes and still see a charge for ten, and we are sorry this happened. You can report the advisor from your chat history, and our Advisor Quality team will review the report. If the advisor ended the session early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. Could you send us the date and amount of the charge and the email linked to your account? And please contact us before disputing the charge with your bank, so we can look into it quickly.",
+          "short": "Sorry about this. Please report the advisor from your chat history; if the session ended early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. Please send the charge date, amount and account email, and contact us before disputing the charge with your bank."
+        },
+        "source": {
+          "article_id": "kb05",
+          "title": "Advisor conduct and session quality",
+          "quote": "If an advisor ended a session early or did not respond, the unused minutes are reviewed and returned to your balance when the report is confirmed.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb02",
+            "title": "Refunds",
+            "score": 0.3761
+          },
+          {
+            "id": "kb05",
+            "title": "Advisor conduct and session quality",
+            "score": 0.3568
+          },
+          {
+            "id": "kb04",
+            "title": "Payment issues",
+            "score": 0.3481
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 679,
+        "output_tokens": 1707,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 35,
+        "latency_s": 7.2,
+        "raw": "{\"summary\": \"Клієнт стверджує, що експерт завершив сесію через 2 хвилини, але з нього списали оплату за 10 хвилин. Він вимагає негайного повернення коштів і погрожує chargeback. За базою знань, запит на повернення розглядає billing-команда, зазвичай протягом 3 робочих днів, а неспожиті хвилини повертаються на баланс після підтвердження скарги на радника.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting us, and we are sorry for the experience you describe. You can report the advisor from your chat history, and our Advisor Quality team will review the report. If the advisor ended the session early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. To help us review it, please reply with the date and amount of the charge and the email linked to your MyTestBase account. Please also contact us before disputing the charge with your bank, so we can check it quickly.\", \"empathetic\": \"We understand how frustrating it is to have a session end after two minutes and still see a charge for ten, and we are sorry this happened. You can report the advisor from your chat history, and our Advisor Quality team will review the report. If the advisor ended the session early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. Could you send us the date and amount of the charge and the email linked to your account? And please contact us before disputing the charge with your bank, so we can look into it quickly.\", \"short\": \"Sorry about this. Please report the advisor from your chat history; if the session ended early, the unused minutes are reviewed and returned to your balance once the report is confirmed. Your refund request will be reviewed by our billing team, usually within 3 business days. Please send the charge date, amount and account email, and contact us before disputing the charge with your bank.\"}, \"source\": {\"article_id\": \"kb05\", \"quote\": \"If an advisor ended a session early or did not respond, the unused minutes are reviewed and returned to your balance when the report is confirmed.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a04",
+        "text": "Hola, me cobraron la suscripción aunque la cancelé la semana pasada. Quiero mi dinero de vuelta.",
+        "expected_articles": [
+          "kb02",
+          "kb01"
+        ],
+        "edge_case": "іспанська"
+      },
+      "result": {
+        "summary": "Клієнт каже, що з нього списали оплату за підписку, хоча він скасував її минулого тижня, і просить повернути гроші. Запити на повернення розглядає біллінг-команда, зазвичай протягом 3 робочих днів, автоматичних повернень немає. Потрібні дата і сума списання та email акаунта; якщо підписку оформлено через App Store або Google Play, повернення здійснюють Apple або Google.",
+        "language": "Spanish",
+        "replies": {
+          "formal": "Gracias por contactarnos. Hemos recibido su solicitud de reembolso del cargo realizado después de la cancelación de su suscripción. Nuestro equipo de facturación revisará su caso individualmente, normalmente en un plazo de 3 días hábiles. Para agilizar la revisión, le rogamos que nos indique la fecha y el importe del cargo y el correo electrónico vinculado a su cuenta de MyTestBase. Si la suscripción se contrató a través de App Store o Google Play, el reembolso lo gestionan Apple o Google según sus propias normas, y le explicaremos cómo solicitarlo.",
+          "empathetic": "Lamentamos mucho que se le haya cobrado una suscripción que ya había cancelado; entendemos lo frustrante que resulta. Hemos recibido su solicitud y nuestro equipo de facturación la revisará de forma individual, normalmente en un plazo de 3 días hábiles. Para ayudarle a agilizarlo, ¿podría indicarnos la fecha y el importe del cargo y el correo electrónico vinculado a su cuenta de MyTestBase? Si se suscribió a través de App Store o Google Play, el reembolso lo gestionan Apple o Google, y le explicaremos cómo solicitarlo.",
+          "short": "Hemos recibido su solicitud y nuestro equipo de facturación la revisará, normalmente en 3 días hábiles. Por favor, envíenos la fecha y el importe del cargo y el correo de su cuenta de MyTestBase. Si contrató por App Store o Google Play, el reembolso lo gestionan Apple o Google."
+        },
+        "source": {
+          "article_id": "kb02",
+          "title": "Refunds",
+          "quote": "Refund requests are reviewed individually by our billing team, usually within 3 business days.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb02",
+            "title": "Refunds",
+            "score": 0.362
+          },
+          {
+            "id": "kb01",
+            "title": "Subscriptions: cancellation, trial and renewal",
+            "score": 0.3364
+          },
+          {
+            "id": "kb09",
+            "title": "Account deletion and personal data",
+            "score": 0.3026
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 778,
+        "output_tokens": 1750,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 27,
+        "latency_s": 7.44,
+        "raw": "{\"summary\": \"Клієнт каже, що з нього списали оплату за підписку, хоча він скасував її минулого тижня, і просить повернути гроші. Запити на повернення розглядає біллінг-команда, зазвичай протягом 3 робочих днів, автоматичних повернень немає. Потрібні дата і сума списання та email акаунта; якщо підписку оформлено через App Store або Google Play, повернення здійснюють Apple або Google.\", \"language\": \"Spanish\", \"replies\": {\"formal\": \"Gracias por contactarnos. Hemos recibido su solicitud de reembolso del cargo realizado después de la cancelación de su suscripción. Nuestro equipo de facturación revisará su caso individualmente, normalmente en un plazo de 3 días hábiles. Para agilizar la revisión, le rogamos que nos indique la fecha y el importe del cargo y el correo electrónico vinculado a su cuenta de MyTestBase. Si la suscripción se contrató a través de App Store o Google Play, el reembolso lo gestionan Apple o Google según sus propias normas, y le explicaremos cómo solicitarlo.\", \"empathetic\": \"Lamentamos mucho que se le haya cobrado una suscripción que ya había cancelado; entendemos lo frustrante que resulta. Hemos recibido su solicitud y nuestro equipo de facturación la revisará de forma individual, normalmente en un plazo de 3 días hábiles. Para ayudarle a agilizarlo, ¿podría indicarnos la fecha y el importe del cargo y el correo electrónico vinculado a su cuenta de MyTestBase? Si se suscribió a través de App Store o Google Play, el reembolso lo gestionan Apple o Google, y le explicaremos cómo solicitarlo.\", \"short\": \"Hemos recibido su solicitud y nuestro equipo de facturación la revisará, normalmente en 3 días hábiles. Por favor, envíenos la fecha y el importe del cargo y el correo de su cuenta de MyTestBase. Si contrató por App Store o Google Play, el reembolso lo gestionan Apple o Google.\"}, \"source\": {\"article_id\": \"kb02\", \"quote\": \"Refund requests are reviewed individually by our billing team, usually within 3 business days.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a05",
+        "text": "Добрий день, не можу знайти, де змінити дату народження в профілі.",
+        "expected_articles": [
+          "kb08"
+        ],
+        "edge_case": "українська"
+      },
+      "result": {
+        "summary": "Клієнт не може знайти, де змінити дату народження в профілі. Згідно зі статтею kb08, зміна доступна через Profile → Edit profile: оновити дані народження та натиснути Save; гороскоп і звіти перераховуються автоматично.",
+        "language": "Ukrainian",
+        "replies": {
+          "formal": "Добрий день. Дату народження можна змінити в розділі Profile → Edit profile. Оновіть дані народження та натисніть Save. Після збереження гороскоп і звіти сумісності перераховуються автоматично.",
+          "empathetic": "Добрий день, розумію, що шукати налаштування буває незручно. Дату народження можна змінити в розділі Profile → Edit profile: оновіть дані та натисніть Save. Після цього гороскоп і звіти сумісності перерахуються автоматично.",
+          "short": "Дату народження можна змінити в Profile → Edit profile. Оновіть дані та натисніть Save."
+        },
+        "source": {
+          "article_id": "kb08",
+          "title": "Profile and birth data",
+          "quote": "To change them, open Profile → Edit profile, update the birth details and tap Save.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb08",
+            "title": "Profile and birth data",
+            "score": 0.3635
+          },
+          {
+            "id": "kb17",
+            "title": "How horoscopes and readings are created",
+            "score": 0.1977
+          },
+          {
+            "id": "kb18",
+            "title": "Compatibility reports",
+            "score": 0.1933
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 518,
+        "output_tokens": 380,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 39,
+        "latency_s": 2.19,
+        "raw": "{\"summary\": \"Клієнт не може знайти, де змінити дату народження в профілі. Згідно зі статтею kb08, зміна доступна через Profile → Edit profile: оновити дані народження та натиснути Save; гороскоп і звіти перераховуються автоматично.\", \"language\": \"Ukrainian\", \"replies\": {\"formal\": \"Добрий день. Дату народження можна змінити в розділі Profile → Edit profile. Оновіть дані народження та натисніть Save. Після збереження гороскоп і звіти сумісності перераховуються автоматично.\", \"empathetic\": \"Добрий день, розумію, що шукати налаштування буває незручно. Дату народження можна змінити в розділі Profile → Edit profile: оновіть дані та натисніть Save. Після цього гороскоп і звіти сумісності перерахуються автоматично.\", \"short\": \"Дату народження можна змінити в Profile → Edit profile. Оновіть дані та натисніть Save.\"}, \"source\": {\"article_id\": \"kb08\", \"quote\": \"To change them, open Profile → Edit profile, update the birth details and tap Save.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a06",
+        "text": "Bardzo lubię dzienny horoskop, ale chciałabym dostawać powiadomienie rano, a nie wieczorem.",
+        "expected_articles": [
+          "kb16"
+        ],
+        "edge_case": "польська"
+      },
+      "result": {
+        "summary": "Klientka chce, aby powiadomienie o dziennym horoskopie przychodziło rano, a nie wieczorem. Według bazy wiedzy godzinę powiadomienia można zmienić w ustawieniach profilu.",
+        "language": "Polish",
+        "replies": {
+          "formal": "Dziękujemy za wiadomość. Godzinę powiadomienia o dziennym horoskopie można zmienić w aplikacji: Profil → Ustawienia → Powiadomienia. Powiadomienie o dziennym horoskopie można ustawić na dowolną godzinę w ciągu dnia.",
+          "empathetic": "Rozumiemy, że poranne powiadomienie o horoskopie byłoby dla Pani wygodniejsze, i cieszymy się, że horoskopy są dla Pani ważne. Godzinę powiadomienia o dziennym horoskopie może Pani zmienić w aplikacji: Profil → Ustawienia → Powiadomienia. Powiadomienie o dziennym horoskopie można ustawić na dowolną godzinę w ciągu dnia.",
+          "short": "Godzinę powiadomienia o dziennym horoskopie zmieni Pani w: Profil → Ustawienia → Powiadomienia. Można ją ustawić na dowolną porę dnia."
+        },
+        "source": {
+          "article_id": "kb16",
+          "title": "Notifications",
+          "quote": "The daily horoscope notification can be set to any time of the day.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb16",
+            "title": "Notifications",
+            "score": 0.3701
+          },
+          {
+            "id": "kb17",
+            "title": "How horoscopes and readings are created",
+            "score": 0.3441
+          },
+          {
+            "id": "kb08",
+            "title": "Profile and birth data",
+            "score": 0.2921
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 568,
+        "output_tokens": 853,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 33,
+        "latency_s": 3.89,
+        "raw": "{\"summary\": \"Klientka chce, aby powiadomienie o dziennym horoskopie przychodziło rano, a nie wieczorem. Według bazy wiedzy godzinę powiadomienia można zmienić w ustawieniach profilu.\", \"language\": \"Polish\", \"replies\": {\"formal\": \"Dziękujemy za wiadomość. Godzinę powiadomienia o dziennym horoskopie można zmienić w aplikacji: Profil → Ustawienia → Powiadomienia. Powiadomienie o dziennym horoskopie można ustawić na dowolną godzinę w ciągu dnia.\", \"empathetic\": \"Rozumiemy, że poranne powiadomienie o horoskopie byłoby dla Pani wygodniejsze, i cieszymy się, że horoskopy są dla Pani ważne. Godzinę powiadomienia o dziennym horoskopie może Pani zmienić w aplikacji: Profil → Ustawienia → Powiadomienia. Powiadomienie o dziennym horoskopie można ustawić na dowolną godzinę w ciągu dnia.\", \"short\": \"Godzinę powiadomienia o dziennym horoskopie zmieni Pani w: Profil → Ustawienia → Powiadomienia. Można ją ustawić na dowolną porę dnia.\"}, \"source\": {\"article_id\": \"kb16\", \"quote\": \"The daily horoscope notification can be set to any time of the day.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a07",
+        "text": "Someone changed the email and password on my account, I can't log in anymore and I see two purchases I never made!",
+        "expected_articles": [
+          "kb19",
+          "kb07"
+        ],
+        "edge_case": "злам акаунта"
+      },
+      "result": {
+        "summary": "Клієнт повідомляє, що хтось змінив email і пароль його акаунта, тепер він не може увійти, і бачить дві покупки, які не здійснював. Потрібно перевірити несанкціонований доступ, за потреби тимчасово заблокувати акаунт, відновити доступ і переглянути покупки.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting MyTestBase. We understand that the email and password on your account were changed without your permission and that you can no longer log in. Our team can temporarily lock the account, help you restore access, and review the purchases made during the unauthorised access. To verify your identity, please reply with your account name and the approximate date of your last purchase. Please also do not dispute the two unrecognised charges with your bank yet, so that we can check them first. Our team will review both purchases and get back to you.",
+          "empathetic": "I'm sorry you're dealing with this. Finding that your email and password were changed and seeing purchases you didn't make is very worrying. Our team can temporarily lock the account, help you restore access, and review the purchases made during the unauthorised access. To verify your identity, please reply with your account name and the approximate date of your last purchase. Please also contact us before disputing the unrecognised charges with your bank, so we can check them quickly. We'll review both purchases and get back to you.",
+          "short": "Please reply with your account name and the approximate date of your last purchase so we can verify your identity. Our team can lock the account, help restore access, and review the two purchases. Please contact us before disputing the charges with your bank."
+        },
+        "source": {
+          "article_id": "kb19",
+          "title": "Account security and suspected unauthorised access",
+          "quote": "If someone else has accessed your MyTestBase account, or you see logins, changes or purchases you did not make, contact support immediately.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb19",
+            "title": "Account security and suspected unauthorised access",
+            "score": 0.478
+          },
+          {
+            "id": "kb07",
+            "title": "Login and password reset",
+            "score": 0.4768
+          },
+          {
+            "id": "kb04",
+            "title": "Payment issues",
+            "score": 0.4283
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 614,
+        "output_tokens": 1142,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 25,
+        "latency_s": 5.37,
+        "raw": "{\"summary\": \"Клієнт повідомляє, що хтось змінив email і пароль його акаунта, тепер він не може увійти, і бачить дві покупки, які не здійснював. Потрібно перевірити несанкціонований доступ, за потреби тимчасово заблокувати акаунт, відновити доступ і переглянути покупки.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting MyTestBase. We understand that the email and password on your account were changed without your permission and that you can no longer log in. Our team can temporarily lock the account, help you restore access, and review the purchases made during the unauthorised access. To verify your identity, please reply with your account name and the approximate date of your last purchase. Please also do not dispute the two unrecognised charges with your bank yet, so that we can check them first. Our team will review both purchases and get back to you.\", \"empathetic\": \"I'm sorry you're dealing with this. Finding that your email and password were changed and seeing purchases you didn't make is very worrying. Our team can temporarily lock the account, help you restore access, and review the purchases made during the unauthorised access. To verify your identity, please reply with your account name and the approximate date of your last purchase. Please also contact us before disputing the unrecognised charges with your bank, so we can check them quickly. We'll review both purchases and get back to you.\", \"short\": \"Please reply with your account name and the approximate date of your last purchase so we can verify your identity. Our team can lock the account, help restore access, and review the two purchases. Please contact us before disputing the charges with your bank.\"}, \"source\": {\"article_id\": \"kb19\", \"quote\": \"If someone else has accessed your MyTestBase account, or you see logins, changes or purchases you did not make, contact support immediately.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a08",
+        "text": "My advisor told me my relationship is doomed. I don't see the point in anything anymore, everything feels hopeless.",
+        "expected_articles": [
+          "kb10"
+        ],
+        "edge_case": "криза: шаблонна відповідь неприйнятна"
+      },
+      "result": {
+        "summary": "Клієнт повідомив, що консультант сказав, що його стосунки приречені, і тепер він відчуває безнадійність та втрату сенсу. Це може бути ознакою емоційної кризи, тож варто звернути увагу на його безпеку. У статтях бази немає інформації про такі ситуації, окрім того, що тлумачення консультанта не є гарантією.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting us. We are sorry to hear you are feeling this way. Please note that advisor readings reflect the advisor's interpretation and are not a guarantee of future events. If you are in immediate danger or feel you may harm yourself, please contact your local emergency number right away, or a crisis helpline in your area. You can also reach out to someone you trust.",
+          "empathetic": "I'm really sorry you're going through such a painful time. Feeling hopeless is hard, and it makes sense that the advisor's words affected you so deeply. Please remember that readings reflect the advisor's interpretation and are not a guarantee of future events. If you feel unsafe or may hurt yourself, please contact your local emergency number now, or a crisis helpline in your area. You don't have to carry this alone, and reaching out to someone you trust can help.",
+          "short": "Advisor readings reflect the advisor's interpretation and are not a guarantee of future events. If you are in danger or may harm yourself, please contact your local emergency number or a crisis helpline now."
+        },
+        "source": {
+          "article_id": "kb05",
+          "title": "Advisor conduct and session quality",
+          "quote": "Readings reflect the advisor's interpretation and are not a guarantee of future events.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb05",
+            "title": "Advisor conduct and session quality",
+            "score": 0.3905
+          },
+          {
+            "id": "kb15",
+            "title": "Chat history",
+            "score": 0.2891
+          },
+          {
+            "id": "kb14",
+            "title": "Free minutes and choosing an advisor",
+            "score": 0.2699
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 580,
+        "output_tokens": 1557,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 23,
+        "latency_s": 7.72,
+        "raw": "{\"summary\": \"Клієнт повідомив, що консультант сказав, що його стосунки приречені, і тепер він відчуває безнадійність та втрату сенсу. Це може бути ознакою емоційної кризи, тож варто звернути увагу на його безпеку. У статтях бази немає інформації про такі ситуації, окрім того, що тлумачення консультанта не є гарантією.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting us. We are sorry to hear you are feeling this way. Please note that advisor readings reflect the advisor's interpretation and are not a guarantee of future events. If you are in immediate danger or feel you may harm yourself, please contact your local emergency number right away, or a crisis helpline in your area. You can also reach out to someone you trust.\", \"empathetic\": \"I'm really sorry you're going through such a painful time. Feeling hopeless is hard, and it makes sense that the advisor's words affected you so deeply. Please remember that readings reflect the advisor's interpretation and are not a guarantee of future events. If you feel unsafe or may hurt yourself, please contact your local emergency number now, or a crisis helpline in your area. You don't have to carry this alone, and reaching out to someone you trust can help.\", \"short\": \"Advisor readings reflect the advisor's interpretation and are not a guarantee of future events. If you are in danger or may harm yourself, please contact your local emergency number or a crisis helpline now.\"}, \"source\": {\"article_id\": \"kb05\", \"quote\": \"Readings reflect the advisor's interpretation and are not a guarantee of future events.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": false,
+        "cited": false,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a09",
+        "text": "I bought the subscription on my iPhone but on my new Android phone it's not there.",
+        "expected_articles": [
+          "kb12"
+        ],
+        "edge_case": "покупки на різних платформах"
+      },
+      "result": {
+        "summary": "Клієнт купив підписку на iPhone, але на новому Android-телефоні її не видно. Згідно з базою знань, підписка прив'язана до облікового запису, і її можна відновити через Profile → Settings → Restore purchases, але лише з тим самим Apple ID або Google-акаунтом, яким була здійснена оригінальна покупка. Оскільки покупка була на iPhone (Apple ID), відновлення на Android, імовірно, не спрацює; статті не описують цей сценарій прямо.",
+        "language": "English",
+        "replies": {
+          "formal": "Dear customer, thank you for contacting us. Your MyTestBase account can be used on several devices, and your subscription is linked to the Apple ID or Google account used for the original purchase. To check your subscription on the new device, please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. Please note that this restore works only with the same Apple ID or Google account that was used for the original purchase, so it may not work for a purchase made on iPhone. If the subscription still does not appear, please reply to this message and our team will check your account and get back to you.",
+          "empathetic": "We understand how frustrating it is when your subscription does not show up on your new phone, and we are sorry for the inconvenience. Your MyTestBase account can be used on several devices, but the subscription is tied to the Apple ID or Google account used for the original purchase. Please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. Keep in mind that this only works with the same Apple ID or Google account that made the purchase, so it may not work across iPhone and Android. If it still does not appear, reply to this message and our team will check it and get back to you.",
+          "short": "Please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. This only works with the same Apple ID or Google account used for the original purchase, so it may not work from iPhone to Android. If it still doesn't appear, reply and our team will check and get back to you."
+        },
+        "source": {
+          "article_id": "kb12",
+          "title": "Using several devices and restoring purchases",
+          "quote": "If your subscription is not visible after logging in on a new device, open Profile → Settings → Restore purchases. This works only with the same Apple ID or Google account that was used for the original purchase.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb01",
+            "title": "Subscriptions: cancellation, trial and renewal",
+            "score": 0.417
+          },
+          {
+            "id": "kb12",
+            "title": "Using several devices and restoring purchases",
+            "score": 0.4136
+          },
+          {
+            "id": "kb11",
+            "title": "Receipts and invoices",
+            "score": 0.3504
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 720,
+        "output_tokens": 763,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 18,
+        "latency_s": 3.69,
+        "raw": "{\"summary\": \"Клієнт купив підписку на iPhone, але на новому Android-телефоні її не видно. Згідно з базою знань, підписка прив'язана до облікового запису, і її можна відновити через Profile → Settings → Restore purchases, але лише з тим самим Apple ID або Google-акаунтом, яким була здійснена оригінальна покупка. Оскільки покупка була на iPhone (Apple ID), відновлення на Android, імовірно, не спрацює; статті не описують цей сценарій прямо.\", \"language\": \"English\", \"replies\": {\"formal\": \"Dear customer, thank you for contacting us. Your MyTestBase account can be used on several devices, and your subscription is linked to the Apple ID or Google account used for the original purchase. To check your subscription on the new device, please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. Please note that this restore works only with the same Apple ID or Google account that was used for the original purchase, so it may not work for a purchase made on iPhone. If the subscription still does not appear, please reply to this message and our team will check your account and get back to you.\", \"empathetic\": \"We understand how frustrating it is when your subscription does not show up on your new phone, and we are sorry for the inconvenience. Your MyTestBase account can be used on several devices, but the subscription is tied to the Apple ID or Google account used for the original purchase. Please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. Keep in mind that this only works with the same Apple ID or Google account that made the purchase, so it may not work across iPhone and Android. If it still does not appear, reply to this message and our team will check it and get back to you.\", \"short\": \"Please log in with the same sign-in method you used to create your account, then go to Profile → Settings → Restore purchases. This only works with the same Apple ID or Google account used for the original purchase, so it may not work from iPhone to Android. If it still doesn't appear, reply and our team will check and get back to you.\"}, \"source\": {\"article_id\": \"kb12\", \"quote\": \"If your subscription is not visible after logging in on a new device, open Profile → Settings → Restore purchases. This works only with the same Apple ID or Google account that was used for the original purchase.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    },
+    {
+      "ticket": {
+        "id": "a10",
+        "text": "Can I use the promo code SPRING20 for the subscription I bought yesterday?",
+        "expected_articles": [
+          "kb13"
+        ],
+        "edge_case": "правильна відповідь — ні"
+      },
+      "result": {
+        "summary": "Клієнт хоче застосувати промокод SPRING20 до підписки, яку купив учора. За правилами промокод не можна застосувати до вже зробленої покупки. Також не відомо, чи оформлював клієнт підписку на сайті чи через App Store або Google Play.",
+        "language": "English",
+        "replies": {
+          "formal": "Thank you for contacting us. Promo codes cannot be applied to a purchase that has already been made, so SPRING20 cannot be applied to the subscription you bought yesterday. Promo codes work only for purchases made on our website at mytestbase.example: enter the code on the payment page before confirming the purchase. If you subscribed through the App Store or Google Play, discounts there are managed by Apple or Google, and our support team cannot apply them. Please let us know where you made the purchase if you need further help.",
+          "empathetic": "I understand it is frustrating to learn that the code cannot be applied after you have already subscribed. Unfortunately, a promo code cannot be applied to a purchase that has already been made, so SPRING20 cannot be added to your subscription from yesterday. For future purchases on our website at mytestbase.example, enter the code on the payment page before you confirm. If you subscribed through the App Store or Google Play, those discounts are managed by Apple or Google, and our team cannot apply them. Let us know where you bought the subscription and we will help as far as we can.",
+          "short": "Unfortunately, SPRING20 cannot be applied to a purchase that has already been made. For future purchases on our website, enter the code on the payment page before confirming. Subscriptions bought through the App Store or Google Play are discounted by Apple or Google, not by us."
+        },
+        "source": {
+          "article_id": "kb13",
+          "title": "Promo codes and discounts",
+          "quote": "A promo code cannot be applied to a purchase that has already been made, and it cannot be combined with other discounts.",
+          "verified": true
+        },
+        "retrieved": [
+          {
+            "id": "kb13",
+            "title": "Promo codes and discounts",
+            "score": 0.4346
+          },
+          {
+            "id": "kb01",
+            "title": "Subscriptions: cancellation, trial and renewal",
+            "score": 0.3244
+          },
+          {
+            "id": "kb12",
+            "title": "Using several devices and restoring purchases",
+            "score": 0.2972
+          }
+        ],
+        "warnings": []
+      },
+      "meta": {
+        "provider": "anthropic",
+        "model": "claude-haiku-5-5",
+        "prompt": "v1",
+        "effort": "medium",
+        "input_tokens": 697,
+        "output_tokens": 1615,
+        "cache_write_tokens": 0,
+        "cache_read_tokens": 571,
+        "embed_index_tokens": 0,
+        "embed_query_tokens": 16,
+        "latency_s": 6.68,
+        "raw": "{\"summary\": \"Клієнт хоче застосувати промокод SPRING20 до підписки, яку купив учора. За правилами промокод не можна застосувати до вже зробленої покупки. Також не відомо, чи оформлював клієнт підписку на сайті чи через App Store або Google Play.\", \"language\": \"English\", \"replies\": {\"formal\": \"Thank you for contacting us. Promo codes cannot be applied to a purchase that has already been made, so SPRING20 cannot be applied to the subscription you bought yesterday. Promo codes work only for purchases made on our website at mytestbase.example: enter the code on the payment page before confirming the purchase. If you subscribed through the App Store or Google Play, discounts there are managed by Apple or Google, and our support team cannot apply them. Please let us know where you made the purchase if you need further help.\", \"empathetic\": \"I understand it is frustrating to learn that the code cannot be applied after you have already subscribed. Unfortunately, a promo code cannot be applied to a purchase that has already been made, so SPRING20 cannot be added to your subscription from yesterday. For future purchases on our website at mytestbase.example, enter the code on the payment page before you confirm. If you subscribed through the App Store or Google Play, those discounts are managed by Apple or Google, and our team cannot apply them. Let us know where you bought the subscription and we will help as far as we can.\", \"short\": \"Unfortunately, SPRING20 cannot be applied to a purchase that has already been made. For future purchases on our website, enter the code on the payment page before confirming. Subscriptions bought through the App Store or Google Play are discounted by Apple or Google, not by us.\"}, \"source\": {\"article_id\": \"kb13\", \"quote\": \"A promo code cannot be applied to a purchase that has already been made, and it cannot be combined with other discounts.\"}}",
+        "error": null,
+        "fallback": false
+      },
+      "checks": {
+        "retrieval": true,
+        "cited": true,
+        "quote": true,
+        "format": true
+      }
+    }
+  ]
+}
